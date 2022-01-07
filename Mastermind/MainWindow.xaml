@@ -1,0 +1,24 @@
+﻿<Window x:Class="Mastermind.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mastermind"
+        mc:Ignorable="d"
+        Title="Mastermind" Height="470" Width="820" Background="#FF9AFFFF" ResizeMode="CanMinimize">
+    <Grid Width="800" Height="434">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="MASTERMIND&#xD;&#xA;" Margin="0,10,0,372" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="30" FontWeight="Bold" Grid.ColumnSpan="2" />
+        <Label Content="Wybierz tryb gry:" HorizontalAlignment="Center" Margin="0,67,0,0" VerticalAlignment="Top" Height="42" Width="800" HorizontalContentAlignment="Center"
+               FontSize="18" Grid.Column="1"/>
+        <Label Content="Mariusz Kuich - Informatyka Stosowana (tryb niestacjonarny)" HorizontalAlignment="Left" Margin="465,402,0,0" VerticalAlignment="Top" Height="32" Width="335"
+               HorizontalContentAlignment="Right" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnDoubleManual" Content="Gra dwuosobowa - punktacja manualna" HorizontalAlignment="Center" Margin="0,125,0,0" VerticalAlignment="Top" Height="58" Width="464" FontSize="15" Background="#FFB3F3C0" Grid.Column="1" Click="btnDoubleManual_Click" />
+        <Button x:Name="btnDoubleAutomatic" Content="Gra dwuosobowa - punktacja automatyczna" HorizontalAlignment="Center" Margin="0,217,0,0" VerticalAlignment="Top" Height="58" Width="464" FontSize="15" Background="#FFEAF3B0" Grid.Column="1" Click="btnDoubleAutomatic_Click" />
+        <Button x:Name="btnSingle" Content="Gra jednoosobowa" HorizontalAlignment="Center" Margin="0,305,0,0" VerticalAlignment="Top" Height="58" Width="464" FontSize="15" Background="#FFF6C2FF" Grid.Column="1" Click="btnSingle_Click" />
+
+    </Grid>
+</Window>
