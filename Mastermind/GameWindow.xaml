@@ -123,7 +123,38 @@
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FF73FF86" FontSize="15" Visibility="Hidden" />
         <Label x:Name="lblSecondPlays" Content="Twój ruch!" HorizontalAlignment="Left" Margin="674,51,0,0" VerticalAlignment="Top" Width="80" Height="32"
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FF73FF86" FontSize="15" Visibility="Hidden" />
-
-
+        <Label x:Name="lblCommand" HorizontalAlignment="Left" Margin="336,146,0,0" VerticalAlignment="Top" Height="27" Width="418"
+               FontSize="15" HorizontalContentAlignment="Center"/>
+        <Image HorizontalAlignment="Left" Height="75" Margin="408,187,0,0" VerticalAlignment="Top" Width="274"
+               Source="/resources/transparent/color_picker.png" />
+        <Image x:Name="slot1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="428,199,0,0"/>
+        <Image x:Name="slot2" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="46" Margin="491,199,0,0"/>
+        <Image x:Name="slot3" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="553,199,0,0"/>
+        <Image x:Name="slot4" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="614,199,0,0"/>
+        <Button x:Name="btnSlot1Left" Content="&lt;" HorizontalAlignment="Left" Margin="426,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot1Left_Click"/>
+        <Button x:Name="btnSlot1Right" Content="&gt;" HorizontalAlignment="Left" Margin="450,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot1Right_Click"/>
+        <Button x:Name="btnSlot2Left" Content="&lt;" HorizontalAlignment="Left" Margin="489,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot2Left_Click"/>
+        <Button x:Name="btnSlot2Right" Content="&gt;" HorizontalAlignment="Left" Margin="513,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot2Right_Click"/>
+        <Button x:Name="btnSlot3Left" Content="&lt;" HorizontalAlignment="Left" Margin="551,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot3Left_Click"/>
+        <Button x:Name="btnSlot3Right" Content="&gt;" HorizontalAlignment="Left" Margin="575,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot3Right_Click"/>
+        <Button x:Name="btnSlot4Left" Content="&lt;" HorizontalAlignment="Left" Margin="612,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot4Left_Click"/>
+        <Button x:Name="btnSlot4Right" Content="&gt;" HorizontalAlignment="Left" Margin="636,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot4Right_Click"/>
+        <Button x:Name="btnSubmit" Content="Zatwierdź" HorizontalAlignment="Left" Margin="486,301,0,0" VerticalAlignment="Top"
+                FontSize="15" Height="44" Width="118" Click="btnSubmit_Click" />
+        <Grid Margin="358,362,33,23" Background="#FFA5FDC1">
+            <Button x:Name="btnSubmitEvaluation" Content="Zatwierdź" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top"
+            FontSize="15" Height="44" Width="118" Click="btnSubmit_Click"/>
+            <TextBox x:Name="textEvaluation1" MaxLength="1" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="54,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="21"/>
+            <Label x:Name="lblIncorrectData" Content="Wprowadź poprawne wartości" HorizontalAlignment="Center" Margin="0,198,0,0" VerticalAlignment="Top" Width="226" Foreground="#FFFF0101"
+                   HorizontalContentAlignment="Center" Visibility="Hidden"/>
+            <Label Content="Oceń próbę" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="374"
+                   FontSize="15" HorizontalContentAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Left" Margin="0,35,0,0" TextWrapping="Wrap" Text="Ilość kolorów występujących w kodzie, kolory w nieodpowiednich miejscach" VerticalAlignment="Top" 
+                       Height="57" Width="157" FontSize="12"/>
+            <TextBlock HorizontalAlignment="Left" Margin="215,35,0,0" TextWrapping="Wrap" Text="Ilość kolorów występujących w kodzie, kolory w odpowiednich miejscach" VerticalAlignment="Top" 
+                Height="57" Width="159" FontSize="12"/>
+            <TextBox x:Name="textEvaluation2" MaxLength="1" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="267,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="21"/>
+        </Grid>
     </Grid>
+
 </Window>
