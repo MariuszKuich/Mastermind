@@ -33,10 +33,12 @@ namespace Mastermind
             this.secondUsername = secondUsername;
             this.roundCount = roundCount;
 
-            testLbl.Content = $"GameMode: {GameMode}\n" +
-                $"RoundCount: {roundCount}\n" +
-                $"FirstUser: {firstUsername}\n" +
-                $"SecoundUser: {secondUsername}";
+        }
+
+        private void Redraw()
+        {
+            InvalidateVisual();
+            UpdateLayout();
         }
     }
 }

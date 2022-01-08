@@ -7,4 +7,34 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="resources/transparent/blue.png" />
+    <None Remove="resources/transparent/board.png" />
+    <None Remove="resources/transparent/color_picker.png" />
+    <None Remove="resources/transparent/green.png" />
+    <None Remove="resources/transparent/grey.png" />
+    <None Remove="resources/transparent/orange.png" />
+    <None Remove="resources/transparent/pink.png" />
+    <None Remove="resources/transparent/pink_s.png" />
+    <None Remove="resources/transparent/purple.png" />
+    <None Remove="resources/transparent/red.png" />
+    <None Remove="resources/transparent/red_s.png" />
+    <None Remove="resources/transparent/yellow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources/transparent/blue.png" />
+    <Resource Include="resources/transparent/board.png" />
+    <Resource Include="resources/transparent/color_picker.png" />
+    <Resource Include="resources/transparent/green.png" />
+    <Resource Include="resources/transparent/grey.png" />
+    <Resource Include="resources/transparent/orange.png" />
+    <Resource Include="resources/transparent/pink.png" />
+    <Resource Include="resources/transparent/pink_s.png" />
+    <Resource Include="resources/transparent/purple.png" />
+    <Resource Include="resources/transparent/red.png" />
+    <Resource Include="resources/transparent/red_s.png" />
+    <Resource Include="resources/transparent/yellow.png" />
+  </ItemGroup>
+
 </Project>

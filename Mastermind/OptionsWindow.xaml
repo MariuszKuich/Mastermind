@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mastermind"
         mc:Ignorable="d"
-        Title="Mastermind" Height="450" Width="800" Background="#FFB7F7AA">
+        Title="Mastermind" Height="450" Width="800" Background="#FFB7F7AA" ResizeMode="CanMinimize">
     <Grid>
         <TextBox x:Name="textFirstPlayer" HorizontalAlignment="Center" Margin="0,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="237" Height="31" VerticalContentAlignment="Center" MaxLength="25" Background="#FFF9C48D"/>
         <TextBox x:Name="textSecondPlayer" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="237" Height="31" VerticalContentAlignment="Center" MaxLength="25" Margin="0,171,0,0" Background="#FFB8C3FF"/>
