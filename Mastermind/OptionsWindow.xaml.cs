@@ -64,7 +64,8 @@ namespace Mastermind
 
         private void CreateGameWindow()
         {
-            GameWindow gameWindow = new GameWindow(textFirstPlayer.Text, textSecondPlayer.Text, Int32.Parse(textRoundCount.Text));
+            int roundCount = Int32.Parse(textRoundCount.Text);
+            GameWindow gameWindow = new GameWindow(textFirstPlayer.Text, textSecondPlayer.Text, roundCount == 0 ? 1 : roundCount);
             gameWindow.Show();
 
             this.Close();
