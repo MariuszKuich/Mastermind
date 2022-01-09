@@ -34,9 +34,13 @@ namespace Mastermind
         private Dictionary<int, Image[]> pins;
         private Dictionary<int, Image[]> results;
         private BitmapImage[] pinsColors;
-        private BitmapImage[] resultsColors;
+        private Dictionary<EvaluationPin, BitmapImage> resultsColors;
         private int[] colorSlotIndexes;
         private BitmapImage[] codedSequence;
+        private int decodedCount;
+
+        private readonly int MAX_EVALUATION_PINS_COUNT = 4;
+        private readonly int MAX_ATTEMPTS_COUNT = 12;
 
         public GameWindow(string firstUsername, string secondUsername, int roundCount)
         {
@@ -106,11 +110,9 @@ namespace Mastermind
 
         private void InitializeResultsColors()
         {
-            resultsColors =  new BitmapImage[]
-            {
-                new BitmapImage(new Uri("/resources/transparent/red_s.png", UriKind.Relative)),
-                new BitmapImage(new Uri("/resources/transparent/pink_s.png", UriKind.Relative))
-            };
+            resultsColors = new Dictionary<EvaluationPin, BitmapImage>();
+            resultsColors.Add(EvaluationPin.INCORRECT_PLACE, new BitmapImage(new Uri("/resources/transparent/pink_s.png", UriKind.Relative)));
+            resultsColors.Add(EvaluationPin.CORRECT_PLACE, new BitmapImage(new Uri("/resources/transparent/red_s.png", UriKind.Relative)));
         }
 
         private void SetInitialGameState()
@@ -251,7 +253,8 @@ namespace Mastermind
             }
             else
             {
-
+                PlaceSequenceOnBoard();
+                EvaluateRoundBasedOnGameMode();
             }
         }
 
@@ -268,10 +271,174 @@ namespace Mastermind
             codedSequence[3] = (BitmapImage)slot4.Source;
         }
 
+        private void PlaceSequenceOnBoard()
+        {
+            Image[] boardsRow = pins[currentRoundGuess];
+            boardsRow[0].Source = slot1.Source;
+            boardsRow[1].Source = slot2.Source;
+            boardsRow[2].Source = slot3.Source;
+            boardsRow[3].Source = slot4.Source;
+        }
+
+        private void EvaluateRoundBasedOnGameMode()
+        {
+            if (GameMode == GameMode.DoubleManual)
+            {
+                SwitchColorButtons(false);
+                gridEvaluate.Visibility = Visibility.Visible;
+                Redraw();
+                return;
+            }
+            if (GameMode == GameMode.DoubleAutomatic)
+            {
+                return;
+            }
+            if (GameMode == GameMode.Single)
+            {
+
+            }
+        }
+
+        private void SwitchColorButtons(bool isEnabled)
+        {
+            btnSubmit.IsEnabled = isEnabled;
+            btnSlot1Left.IsEnabled = isEnabled;
+            btnSlot1Right.IsEnabled = isEnabled;
+            btnSlot2Left.IsEnabled = isEnabled;
+            btnSlot2Right.IsEnabled = isEnabled;
+            btnSlot3Left.IsEnabled = isEnabled;
+            btnSlot3Right.IsEnabled = isEnabled;
+            btnSlot4Left.IsEnabled = isEnabled;
+            btnSlot4Right.IsEnabled = isEnabled;
+        }
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void btnSubmitEvaluation_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(textEvaluation1.Text) || string.IsNullOrEmpty(textEvaluation2.Text))
+            {
+                lblIncorrectData.Visibility = Visibility.Visible;
+                Redraw();
+                return;
+            }
+            
+            int pinsIncorrectPlace = Int32.Parse(textEvaluation1.Text);
+            int pinsCorrectPlace = Int32.Parse(textEvaluation2.Text);
+            bool decoded = false;
+
+            if (pinsIncorrectPlace + pinsCorrectPlace > MAX_EVALUATION_PINS_COUNT)
+            {
+                lblIncorrectData.Visibility = Visibility.Visible;
+                Redraw();
+                return;
+            }
+
+            if (pinsCorrectPlace == MAX_EVALUATION_PINS_COUNT)
+            {
+                decoded = true;
+            }
+
+            int index = 0;
+            Image[] pins = results[currentRoundGuess];
+
+            while (pinsIncorrectPlace > 0)
+            {
+                pins[index].Source = resultsColors[EvaluationPin.INCORRECT_PLACE];
+                index++;
+                pinsIncorrectPlace--;
+            }
+            while (pinsCorrectPlace > 0)
+            {
+                pins[index].Source = resultsColors[EvaluationPin.CORRECT_PLACE];
+                index++;
+                pinsCorrectPlace--;
+            }
+
+            gridEvaluate.Visibility = Visibility.Hidden;
+            lblIncorrectData.Visibility = Visibility.Hidden;
+            SwitchColorButtons(true);
+
+            SumUpAttempt(decoded);
+        }
+
+        private void SumUpAttempt(bool decoded)
+        {
+            if (decoded)
+            {
+                HandleCurrentGuessEnd(Messages.Decoded, currentRoundGuess);
+            }
+            else if (currentRoundGuess == 12)
+            {
+                HandleCurrentGuessEnd(Messages.NotDecoded, currentRoundGuess + 1);
+            }
+            else
+            {
+                UpdateControls(Messages.NextAttempt);
+                currentRoundGuess++;
+            } 
+        }
+
+        private void HandleCurrentGuessEnd(String message, int points)
+        {
+            if (activePlayer == ActivePlayer.FIRST)
+            {
+                secondUserScore += points;
+            }
+            else
+            {
+                firstUserScore += points;
+            }
+
+            ClearBoard(currentRoundGuess);
+            currentRoundGuess = 1;
+            decodedCount++;
+            if (decodedCount == 2)
+            {
+                currentRound++;
+                decodedCount = 0;
+                if (currentRound > roundCount)
+                {
+                    currentRound--;
+                    SwitchColorButtons(false);
+                    if (firstUserScore == secondUserScore)
+                    {
+                        UpdateControls("Koniec gry! Remis!");
+                    }
+                    else
+                    {
+                        string winner = firstUserScore > secondUserScore ? firstUsername : secondUsername;
+                        UpdateControls($"Koniec gry! Wygrał gracz {winner}!");
+                    }
+                    return;
+                }
+            }
+            gamePhase = GamePhase.CODING;
+            UpdateControls(message);
+        }
+
+        private void ClearBoard(int numberOfGuesses)
+        {
+            while (numberOfGuesses > 0)
+            {
+                Image[] pinsToClear = pins[numberOfGuesses];
+                foreach (Image pinToClear in pinsToClear)
+                {
+                    pinToClear.Source = null;
+                }
+
+                Image[] resultsToClear = results[numberOfGuesses];
+                foreach (Image resultToClear in resultsToClear)
+                {
+                    resultToClear.Source = null;
+                }
+
+                numberOfGuesses--;
+            }
         }
     }
 }

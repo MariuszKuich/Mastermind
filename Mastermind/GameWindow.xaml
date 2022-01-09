@@ -106,14 +106,6 @@
         <Image x:Name="result12_4"  HorizontalAlignment="Left" Height="15" VerticalAlignment="Top" Width="15" Margin="298,53,0,0"/>
         <Label x:Name="lblSecondScore" HorizontalAlignment="Left" Margin="336,51,0,0" VerticalAlignment="Top" Height="32" Width="333"
                HorizontalContentAlignment="Center" FontSize="15" VerticalContentAlignment="Center" Background="#FFFFC4B4" RenderTransformOrigin="0.5,0.5" >
-            <Label.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0.579"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Label.RenderTransform>
         </Label>
         <Label x:Name="lblFirstScore" HorizontalAlignment="Left" Margin="336,14,0,0" VerticalAlignment="Top" Height="32" Width="333"
             HorizontalContentAlignment="Center" FontSize="15" Background="#FFFFBFF7" />
@@ -123,7 +115,7 @@
                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FF73FF86" FontSize="15" Visibility="Hidden" />
         <Label x:Name="lblSecondPlays" Content="Twój ruch!" HorizontalAlignment="Left" Margin="674,51,0,0" VerticalAlignment="Top" Width="80" Height="32"
             HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FF73FF86" FontSize="15" Visibility="Hidden" />
-        <Label x:Name="lblCommand" HorizontalAlignment="Left" Margin="336,146,0,0" VerticalAlignment="Top" Height="27" Width="418"
+        <Label x:Name="lblCommand" HorizontalAlignment="Left" Margin="336,146,0,0" VerticalAlignment="Top" Height="36" Width="418"
                FontSize="15" HorizontalContentAlignment="Center"/>
         <Image HorizontalAlignment="Left" Height="75" Margin="408,187,0,0" VerticalAlignment="Top" Width="274"
                Source="/resources/transparent/color_picker.png" />
@@ -141,9 +133,9 @@
         <Button x:Name="btnSlot4Right" Content="&gt;" HorizontalAlignment="Left" Margin="636,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot4Right_Click"/>
         <Button x:Name="btnSubmit" Content="Zatwierdź" HorizontalAlignment="Left" Margin="486,301,0,0" VerticalAlignment="Top"
                 FontSize="15" Height="44" Width="118" Click="btnSubmit_Click" />
-        <Grid Margin="358,362,33,23" Background="#FFA5FDC1" Visibility="Hidden">
+        <Grid x:Name="gridEvaluate" Margin="358,362,33,23" Background="#FFA5FDC1" Visibility="Hidden">
             <Button x:Name="btnSubmitEvaluation" Content="Zatwierdź" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top"
-            FontSize="15" Height="44" Width="118" Click="btnSubmit_Click"/>
+            FontSize="15" Height="44" Width="118" Click="btnSubmitEvaluation_Click"/>
             <TextBox x:Name="textEvaluation1" MaxLength="1" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="54,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="21"/>
             <Label x:Name="lblIncorrectData" Content="Wprowadź poprawne wartości" HorizontalAlignment="Center" Margin="0,198,0,0" VerticalAlignment="Top" Width="226" Foreground="#FFFF0101"
                    HorizontalContentAlignment="Center" Visibility="Hidden"/>
