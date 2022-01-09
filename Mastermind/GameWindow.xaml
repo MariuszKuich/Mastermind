@@ -141,7 +141,7 @@
         <Button x:Name="btnSlot4Right" Content="&gt;" HorizontalAlignment="Left" Margin="636,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot4Right_Click"/>
         <Button x:Name="btnSubmit" Content="Zatwierdź" HorizontalAlignment="Left" Margin="486,301,0,0" VerticalAlignment="Top"
                 FontSize="15" Height="44" Width="118" Click="btnSubmit_Click" />
-        <Grid Margin="358,362,33,23" Background="#FFA5FDC1">
+        <Grid Margin="358,362,33,23" Background="#FFA5FDC1" Visibility="Hidden">
             <Button x:Name="btnSubmitEvaluation" Content="Zatwierdź" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top"
             FontSize="15" Height="44" Width="118" Click="btnSubmit_Click"/>
             <TextBox x:Name="textEvaluation1" MaxLength="1" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="54,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="21"/>

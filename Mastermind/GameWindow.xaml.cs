@@ -26,13 +26,17 @@ namespace Mastermind
         private int firstUserScore;
         private string secondUsername;
         private int secondUserScore;
+        private ActivePlayer activePlayer;
+        private GamePhase gamePhase;
         private int roundCount;
         private int currentRound;
+        private int currentRoundGuess;
         private Dictionary<int, Image[]> pins;
         private Dictionary<int, Image[]> results;
         private BitmapImage[] pinsColors;
         private BitmapImage[] resultsColors;
         private int[] colorSlotIndexes;
+        private BitmapImage[] codedSequence;
 
         public GameWindow(string firstUsername, string secondUsername, int roundCount)
         {
@@ -41,20 +45,17 @@ namespace Mastermind
             this.firstUsername = firstUsername;
             this.secondUsername = secondUsername;
             this.roundCount = roundCount;
-            currentRound = 1;
 
-            initializePins();
-            initializeResults();
-            initializePinsColors();
-            initializeResultsColors();
-            initializeColorPicker();
+            InitializePins();
+            InitializeResults();
+            InitializePinsColors();
+            InitializeResultsColors();
 
-            updateLabels();
-
-            Redraw();
+            SetInitialGameState();
+            UpdateControls(Messages.SetCode);
         }
 
-        private void initializePins()
+        private void InitializePins()
         {
             pins = new Dictionary<int, Image[]>();
             pins.Add(1, new Image[] { pin1_1, pin1_2, pin1_3, pin1_4 });
@@ -71,7 +72,7 @@ namespace Mastermind
             pins.Add(12, new Image[] { pin12_1, pin12_2, pin12_3, pin12_4 });
         }
 
-        private void initializeResults()
+        private void InitializeResults()
         {
             results = new Dictionary<int, Image[]>();
             results.Add(1, new Image[] { result1_1, result1_2, result1_3, result1_4 });
@@ -88,7 +89,7 @@ namespace Mastermind
             results.Add(12, new Image[] { result12_1, result12_2, result12_3, result12_4 });
         }
 
-        private void initializePinsColors()
+        private void InitializePinsColors()
         {
             pinsColors =  new BitmapImage[]
             {
@@ -103,7 +104,7 @@ namespace Mastermind
             };
         }
 
-        private void initializeResultsColors()
+        private void InitializeResultsColors()
         {
             resultsColors =  new BitmapImage[]
             {
@@ -112,16 +113,26 @@ namespace Mastermind
             };
         }
 
-        private void initializeColorPicker()
+        private void SetInitialGameState()
         {
+            codedSequence = new BitmapImage[4];
             colorSlotIndexes = new int[4];
-            colorSlotIndexes[0] = initializeColorSlot(slot1);
-            colorSlotIndexes[1] = initializeColorSlot(slot2);
-            colorSlotIndexes[2] = initializeColorSlot(slot3);
-            colorSlotIndexes[3] = initializeColorSlot(slot4);
+            RandomizeColorPicker();
+            currentRound = 1;
+            currentRoundGuess = 1;
+            activePlayer = ActivePlayer.FIRST;
+            gamePhase = GamePhase.CODING;
         }
 
-        private int initializeColorSlot(Image slot)
+        private void RandomizeColorPicker()
+        {
+            colorSlotIndexes[0] = RandomizeColorSlot(slot1);
+            colorSlotIndexes[1] = RandomizeColorSlot(slot2);
+            colorSlotIndexes[2] = RandomizeColorSlot(slot3);
+            colorSlotIndexes[3] = RandomizeColorSlot(slot4);
+        }
+
+        private int RandomizeColorSlot(Image slot)
         {
             Random random = new Random();
             int randomIndex = random.Next(0, pinsColors.Length);
@@ -129,12 +140,25 @@ namespace Mastermind
             return randomIndex;
         }
 
-        private void updateLabels()
+        private void UpdateControls(string message)
         {
             lblFirstScore.Content = $"{firstUsername}: {firstUserScore}";
             lblSecondScore.Content = $"{secondUsername}: {secondUserScore}";
             lblRound.Content = $"Runda: {currentRound} / {roundCount}";
-            lblFirstPlays.Visibility = Visibility.Visible;
+            if (activePlayer == ActivePlayer.FIRST)
+            {
+                lblFirstPlays.Visibility = Visibility.Visible;
+                lblSecondPlays.Visibility = Visibility.Hidden;
+
+            }
+            else
+            {
+                lblFirstPlays.Visibility = Visibility.Hidden;
+                lblSecondPlays.Visibility = Visibility.Visible;
+            }
+            lblCommand.Content = message;
+
+            Redraw();
         }
 
         private void Redraw()
@@ -145,45 +169,45 @@ namespace Mastermind
 
         private void btnSlot1Left_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot1, Direction.LEFT, 0);
+            UpdateColorPicker(slot1, Direction.LEFT, 0);
         }
 
         private void btnSlot1Right_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot1, Direction.RIGHT, 0);
+            UpdateColorPicker(slot1, Direction.RIGHT, 0);
         }
 
         private void btnSlot2Left_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot2, Direction.LEFT, 1);
+            UpdateColorPicker(slot2, Direction.LEFT, 1);
         }
 
         private void btnSlot2Right_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot2, Direction.RIGHT, 1);
+            UpdateColorPicker(slot2, Direction.RIGHT, 1);
         }
 
         private void btnSlot3Left_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot3, Direction.LEFT, 2);
+            UpdateColorPicker(slot3, Direction.LEFT, 2);
         }
 
         private void btnSlot3Right_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot3, Direction.RIGHT, 2);
+            UpdateColorPicker(slot3, Direction.RIGHT, 2);
         }
 
         private void btnSlot4Left_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot4, Direction.LEFT, 3);
+            UpdateColorPicker(slot4, Direction.LEFT, 3);
         }
 
         private void btnSlot4Right_Click(object sender, RoutedEventArgs e)
         {
-            updateColorPicker(slot4, Direction.RIGHT, 3);
+            UpdateColorPicker(slot4, Direction.RIGHT, 3);
         }
 
-        private void updateColorPicker(Image colorSlot, Direction direction, int lastColorDataIndex)
+        private void UpdateColorPicker(Image colorSlot, Direction direction, int lastColorDataIndex)
         {
             int index = colorSlotIndexes[lastColorDataIndex];
             if (direction == Direction.LEFT)
@@ -194,7 +218,7 @@ namespace Mastermind
             {
                 index++;
             }
-            index = validateIndex(index);
+            index = ValidateIndex(index);
 
             colorSlot.Source = pinsColors[index];
             colorSlotIndexes[lastColorDataIndex] = index;
@@ -202,7 +226,7 @@ namespace Mastermind
             Redraw();
         }
 
-        private int validateIndex(int index)
+        private int ValidateIndex(int index)
         {
             if (index < 0)
             {
@@ -217,7 +241,31 @@ namespace Mastermind
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+            if (gamePhase == GamePhase.CODING)
+            {
+                SaveCodedSequence();
+                activePlayer = GetOtherPlayer();
+                gamePhase = GamePhase.DECODING;
+                RandomizeColorPicker();
+                UpdateControls(Messages.BreakCode);
+            }
+            else
+            {
 
+            }
+        }
+
+        private ActivePlayer GetOtherPlayer()
+        {
+            return activePlayer == ActivePlayer.FIRST ? ActivePlayer.SECOND : ActivePlayer.FIRST;
+        }
+
+        private void SaveCodedSequence()
+        {
+            codedSequence[0] = (BitmapImage)slot1.Source;
+            codedSequence[1] = (BitmapImage)slot2.Source;
+            codedSequence[2] = (BitmapImage)slot3.Source;
+            codedSequence[3] = (BitmapImage)slot4.Source;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
