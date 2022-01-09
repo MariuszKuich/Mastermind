@@ -363,18 +363,18 @@ namespace Mastermind
             lblIncorrectData.Visibility = Visibility.Hidden;
             SwitchColorButtons(true);
 
-            SumUpAttempt(decoded);
+            SumUpAttemptTwoPlayers(decoded);
         }
 
-        private void SumUpAttempt(bool decoded)
+        private void SumUpAttemptTwoPlayers(bool decoded)
         {
             if (decoded)
             {
-                HandleCurrentGuessEnd(Messages.Decoded, currentRoundGuess);
+                HandleCurrentGuessEndTwoPlayers(Messages.Decoded, currentRoundGuess);
             }
-            else if (currentRoundGuess == 12)
+            else if (currentRoundGuess == MAX_ATTEMPTS_COUNT)
             {
-                HandleCurrentGuessEnd(Messages.NotDecoded, currentRoundGuess + 1);
+                HandleCurrentGuessEndTwoPlayers(Messages.NotDecoded, currentRoundGuess + 1);
             }
             else
             {
@@ -383,7 +383,7 @@ namespace Mastermind
             } 
         }
 
-        private void HandleCurrentGuessEnd(String message, int points)
+        private void HandleCurrentGuessEndTwoPlayers(String message, int points)
         {
             if (activePlayer == ActivePlayer.FIRST)
             {
@@ -419,6 +419,11 @@ namespace Mastermind
             }
             gamePhase = GamePhase.CODING;
             UpdateControls(message);
+        }
+
+        private void SumUpAttemptOnePlayer()
+        {
+
         }
 
         private void ClearBoard(int numberOfGuesses)
