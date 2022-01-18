@@ -36,7 +36,7 @@ namespace Mastermind
         private BitmapImage[] pinsColors;
         private Dictionary<EvaluationPin, BitmapImage> resultsColors;
         private int[] colorSlotIndexes;
-        private BitmapImage[] codedSequence;
+        private ImageSource[] codedSequence;
         private int decodedCount;
 
         private readonly int MAX_EVALUATION_PINS_COUNT = 4;
@@ -117,7 +117,7 @@ namespace Mastermind
 
         private void SetInitialGameState()
         {
-            codedSequence = new BitmapImage[4];
+            codedSequence = new ImageSource[4];
             colorSlotIndexes = new int[4];
             RandomizeColorPicker();
             currentRound = 1;
@@ -266,10 +266,10 @@ namespace Mastermind
 
         private void SaveCodedSequence()
         {
-            codedSequence[0] = (BitmapImage)slot1.Source;
-            codedSequence[1] = (BitmapImage)slot2.Source;
-            codedSequence[2] = (BitmapImage)slot3.Source;
-            codedSequence[3] = (BitmapImage)slot4.Source;
+            codedSequence[0] = slot1.Source;
+            codedSequence[1] = slot2.Source;
+            codedSequence[2] = slot3.Source;
+            codedSequence[3] = slot4.Source;
         }
 
         private void SetSequenceOnPeeks()
@@ -301,6 +301,8 @@ namespace Mastermind
             }
             if (GameMode == GameMode.DoubleAutomatic)
             {
+                bool decoded = EvaluateRoundTwoPlayers();
+                SumUpAttemptTwoPlayers(decoded);
                 return;
             }
             if (GameMode == GameMode.Single)
@@ -328,6 +330,35 @@ namespace Mastermind
             textEvaluation2.Text = string.Empty;
 
             ChangeCodePeekVisibility(Visibility.Hidden);
+        }
+
+        private bool EvaluateRoundTwoPlayers()
+        {
+            int pinsIncorrectPlace = 0;
+            int pinsCorrectPlace = 0;
+            bool decoded = false;
+
+            Image[] guessedColors = { slot1, slot2, slot3, slot4 };
+            for (int i = 0; i < MAX_EVALUATION_PINS_COUNT; i++)
+            {
+                if (guessedColors[i].Source.Equals(codedSequence[i]))
+                {
+                    pinsCorrectPlace++;
+                }
+                else if (codedSequence.Contains(guessedColors[i].Source))
+                {
+                    pinsIncorrectPlace++;
+                }
+            }
+
+            if (pinsCorrectPlace == MAX_EVALUATION_PINS_COUNT)
+            {
+                decoded = true;
+            }
+
+            SetEvaluationPins(pinsIncorrectPlace, pinsCorrectPlace);
+
+            return decoded;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -361,6 +392,17 @@ namespace Mastermind
                 decoded = true;
             }
 
+            SetEvaluationPins(pinsIncorrectPlace, pinsCorrectPlace);
+
+            gridEvaluate.Visibility = Visibility.Hidden;
+            lblIncorrectData.Visibility = Visibility.Hidden;
+            SwitchColorButtons(true);
+
+            SumUpAttemptTwoPlayers(decoded);
+        }
+
+        private void SetEvaluationPins(int pinsIncorrectPlace, int pinsCorrectPlace)
+        {
             int index = 0;
             Image[] pins = results[currentRoundGuess];
 
@@ -376,12 +418,6 @@ namespace Mastermind
                 index++;
                 pinsCorrectPlace--;
             }
-
-            gridEvaluate.Visibility = Visibility.Hidden;
-            lblIncorrectData.Visibility = Visibility.Hidden;
-            SwitchColorButtons(true);
-
-            SumUpAttemptTwoPlayers(decoded);
         }
 
         private void SumUpAttemptTwoPlayers(bool decoded)
