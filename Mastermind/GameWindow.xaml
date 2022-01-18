@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mastermind"
         mc:Ignorable="d"
-        Title="Mastermind" Height="654" Width="795" Background="#FFE3FFC5" ResizeMode="CanMinimize">
+        Title="Mastermind" Height="672" Width="795" Background="#FFE3FFC5" ResizeMode="CanMinimize">
     <Grid Margin="10,10,10,10">
         <Image HorizontalAlignment="Left" Height="570" Width="316" VerticalAlignment="Top" Source="resources/transparent/board.png" Margin="10,10,0,16"/>
         <Image x:Name="pin1_1" HorizontalAlignment="Left" Height="46" VerticalAlignment="Top" Width="43" Margin="30,521,0,0"/>
@@ -133,12 +133,12 @@
         <Button x:Name="btnSlot4Right" Content="&gt;" HorizontalAlignment="Left" Margin="636,257,0,0" VerticalAlignment="Top" Height="22" Width="24" Click="btnSlot4Right_Click"/>
         <Button x:Name="btnSubmit" Content="Zatwierdź" HorizontalAlignment="Left" Margin="486,301,0,0" VerticalAlignment="Top"
                 FontSize="15" Height="44" Width="118" Click="btnSubmit_Click" />
-        <Grid x:Name="gridEvaluate" Margin="358,362,33,23" Background="#FFA5FDC1" Visibility="Hidden">
+        <Grid x:Name="gridEvaluate" Margin="358,362,33,0" Background="#FFA5FDC1" Visibility="Hidden">
             <Button x:Name="btnSubmitEvaluation" Content="Zatwierdź" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top"
             FontSize="15" Height="44" Width="118" Click="btnSubmitEvaluation_Click"/>
             <TextBox x:Name="textEvaluation1" MaxLength="1" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="54,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="21"/>
-            <Label x:Name="lblIncorrectData" Content="Wprowadź poprawne wartości" HorizontalAlignment="Center" Margin="0,198,0,0" VerticalAlignment="Top" Width="226" Foreground="#FFFF0101"
-                   HorizontalContentAlignment="Center" Visibility="Hidden"/>
+            <Label x:Name="lblIncorrectData" Content="Wprowadź poprawne wartości" HorizontalAlignment="Left" Margin="242,164,0,0" VerticalAlignment="Top" Width="128" Foreground="#FFFF0101"
+                   HorizontalContentAlignment="Center" Visibility="Hidden" FontSize="8" Height="24"/>
             <Label Content="Oceń próbę" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="374"
                    FontSize="15" HorizontalContentAlignment="Center"/>
             <TextBlock HorizontalAlignment="Left" Margin="0,35,0,0" TextWrapping="Wrap" Text="Ilość kolorów występujących w kodzie, kolory w nieodpowiednich miejscach" VerticalAlignment="Top" 
@@ -146,6 +146,11 @@
             <TextBlock HorizontalAlignment="Left" Margin="215,35,0,0" TextWrapping="Wrap" Text="Ilość kolorów występujących w kodzie, kolory w odpowiednich miejscach" VerticalAlignment="Top" 
                 Height="57" Width="159" FontSize="12"/>
             <TextBox x:Name="textEvaluation2" MaxLength="1" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="267,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Height="21"/>
+            <Button x:Name="btnPeekCode" Content="Sprawdź kod" HorizontalAlignment="Left" Margin="10,212,0,0" VerticalAlignment="Top" Click="btnPeekCode_Click"/>
+            <Image x:Name="peek1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="95,203,0,0" Visibility="Hidden"/>
+            <Image x:Name="peek2" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="145,203,0,0" Visibility="Hidden"/>
+            <Image x:Name="peek3" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="195,203,0,0" Visibility="Hidden"/>
+            <Image x:Name="peek4" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="245,203,0,0" Visibility="Hidden"/>
         </Grid>
     </Grid>
 

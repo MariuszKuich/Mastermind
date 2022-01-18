@@ -246,6 +246,7 @@ namespace Mastermind
             if (gamePhase == GamePhase.CODING)
             {
                 SaveCodedSequence();
+                SetSequenceOnPeeks();
                 activePlayer = GetOtherPlayer();
                 gamePhase = GamePhase.DECODING;
                 RandomizeColorPicker();
@@ -271,6 +272,14 @@ namespace Mastermind
             codedSequence[3] = (BitmapImage)slot4.Source;
         }
 
+        private void SetSequenceOnPeeks()
+        {
+            peek1.Source = codedSequence[0];
+            peek2.Source = codedSequence[1];
+            peek3.Source = codedSequence[2];
+            peek4.Source = codedSequence[3];
+        }
+
         private void PlaceSequenceOnBoard()
         {
             Image[] boardsRow = pins[currentRoundGuess];
@@ -285,6 +294,7 @@ namespace Mastermind
             if (GameMode == GameMode.DoubleManual)
             {
                 SwitchColorButtons(false);
+                PrepareEvaluationBoard();
                 gridEvaluate.Visibility = Visibility.Visible;
                 Redraw();
                 return;
@@ -310,6 +320,14 @@ namespace Mastermind
             btnSlot3Right.IsEnabled = isEnabled;
             btnSlot4Left.IsEnabled = isEnabled;
             btnSlot4Right.IsEnabled = isEnabled;
+        }
+
+        private void PrepareEvaluationBoard()
+        {
+            textEvaluation1.Text = string.Empty;
+            textEvaluation2.Text = string.Empty;
+
+            ChangeCodePeekVisibility(Visibility.Hidden);
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -444,6 +462,21 @@ namespace Mastermind
 
                 numberOfGuesses--;
             }
+        }
+
+        private void btnPeekCode_Click(object sender, RoutedEventArgs e)
+        {
+            Visibility visibility = peek1.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+
+            ChangeCodePeekVisibility(visibility);
+        }
+
+        private void ChangeCodePeekVisibility(Visibility visibility)
+        {
+            peek1.Visibility = visibility;
+            peek2.Visibility = visibility;
+            peek3.Visibility = visibility;
+            peek4.Visibility = visibility;
         }
     }
 }
