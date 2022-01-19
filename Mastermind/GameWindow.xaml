@@ -152,6 +152,12 @@
             <Image x:Name="peek3" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="195,203,0,0" Visibility="Hidden"/>
             <Image x:Name="peek4" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="245,203,0,0" Visibility="Hidden"/>
         </Grid>
+        <Image x:Name="correct1" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="426,397,0,0" Visibility="Hidden" />
+        <Image x:Name="correct2" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="491,397,0,0" Visibility="Hidden" />
+        <Image x:Name="correct3" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="553,397,0,0" Visibility="Hidden" />
+        <Image x:Name="correct4" HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="45" Margin="614,397,0,0" Visibility="Hidden" />
+        <Label x:Name="lblCorrect" Content="Ostatni nieodgadnięty kod:" HorizontalAlignment="Left" Margin="408,362,0,0" VerticalAlignment="Top" 
+               HorizontalContentAlignment="Center" FontSize="15" Width="274" Visibility="Hidden"/>
     </Grid>
 
 </Window>

@@ -56,7 +56,18 @@ namespace Mastermind
             InitializeResultsColors();
 
             SetInitialGameState();
-            UpdateControls(Messages.SetCode);
+
+            if (GameMode == GameMode.Single)
+            {
+                HideControlsForSecondPlayer();
+                GenerateRandomColorSequence();
+                gamePhase = GamePhase.DECODING;
+                UpdateControls(Messages.BreakCode);
+            }
+            else
+            {
+                UpdateControls(Messages.SetCode);
+            }
         }
 
         private void InitializePins()
@@ -126,6 +137,27 @@ namespace Mastermind
             gamePhase = GamePhase.CODING;
         }
 
+        private void HideControlsForSecondPlayer()
+        {
+            lblFirstPlays.Visibility = Visibility.Hidden;
+            lblSecondPlays.Visibility = Visibility.Hidden;
+            lblSecondScore.Visibility = Visibility.Hidden;
+        }
+
+        private void GenerateRandomColorSequence()
+        {
+            Random random = new Random();
+            int[] randomIndexes = Enumerable.Range(0, pinsColors.Length)
+                .OrderBy(i => random.Next())
+                .Take(codedSequence.Length)
+                .ToArray();
+
+            codedSequence[0] = pinsColors[randomIndexes[0]];
+            codedSequence[1] = pinsColors[randomIndexes[1]];
+            codedSequence[2] = pinsColors[randomIndexes[2]];
+            codedSequence[3] = pinsColors[randomIndexes[3]];
+        }
+
         private void RandomizeColorPicker()
         {
             colorSlotIndexes[0] = RandomizeColorSlot(slot1);
@@ -145,19 +177,25 @@ namespace Mastermind
         private void UpdateControls(string message)
         {
             lblFirstScore.Content = $"{firstUsername}: {firstUserScore}";
-            lblSecondScore.Content = $"{secondUsername}: {secondUserScore}";
             lblRound.Content = $"Runda: {currentRound} / {roundCount}";
-            if (activePlayer == ActivePlayer.FIRST)
-            {
-                lblFirstPlays.Visibility = Visibility.Visible;
-                lblSecondPlays.Visibility = Visibility.Hidden;
 
-            }
-            else
+            if (GameMode != GameMode.Single)
             {
-                lblFirstPlays.Visibility = Visibility.Hidden;
-                lblSecondPlays.Visibility = Visibility.Visible;
+                lblSecondScore.Content = $"{secondUsername}: {secondUserScore}";
+
+                if (activePlayer == ActivePlayer.FIRST)
+                {
+                    lblFirstPlays.Visibility = Visibility.Visible;
+                    lblSecondPlays.Visibility = Visibility.Hidden;
+
+                }
+                else
+                {
+                    lblFirstPlays.Visibility = Visibility.Hidden;
+                    lblSecondPlays.Visibility = Visibility.Visible;
+                }
             }
+            
             lblCommand.Content = message;
 
             Redraw();
@@ -301,13 +339,14 @@ namespace Mastermind
             }
             if (GameMode == GameMode.DoubleAutomatic)
             {
-                bool decoded = EvaluateRoundTwoPlayers();
+                bool decoded = EvaluateRound();
                 SumUpAttemptTwoPlayers(decoded);
                 return;
             }
             if (GameMode == GameMode.Single)
             {
-
+                bool decoded = EvaluateRound();
+                SumUpAttemptOnePlayer(decoded);
             }
         }
 
@@ -332,7 +371,7 @@ namespace Mastermind
             ChangeCodePeekVisibility(Visibility.Hidden);
         }
 
-        private bool EvaluateRoundTwoPlayers()
+        private bool EvaluateRound()
         {
             int pinsIncorrectPlace = 0;
             int pinsCorrectPlace = 0;
@@ -475,9 +514,45 @@ namespace Mastermind
             UpdateControls(message);
         }
 
-        private void SumUpAttemptOnePlayer()
+        private void SumUpAttemptOnePlayer(bool decoded)
         {
+            if (decoded)
+            {
+                ChangeHintVisibility(Visibility.Hidden);
+                HandleCurrentGuessEndOnePlayer(Messages.DecodedSingle, currentRoundGuess);
+            }
+            else if (currentRoundGuess == MAX_ATTEMPTS_COUNT)
+            {
+                SetCorrectAnswerOnHint();
+                ChangeHintVisibility(Visibility.Visible);
+                HandleCurrentGuessEndOnePlayer(Messages.NotDecodedSingle, currentRoundGuess);
+            }
+            else
+            {
+                UpdateControls(Messages.NextAttempt);
+                currentRoundGuess++;
+            }
+        }
 
+        private void HandleCurrentGuessEndOnePlayer(String message, int points)
+        {
+            firstUserScore += points;
+
+            ClearBoard(currentRoundGuess);
+            currentRoundGuess = 1;
+            currentRound++;
+            
+            if (currentRound > roundCount)
+            {
+                currentRound--;
+                SwitchColorButtons(false);
+                UpdateControls($"Koniec gry! Podjąłeś łącznie {firstUserScore} prób odgadnięcia kodów.");
+                return;
+            }
+
+            gamePhase = GamePhase.DECODING;
+            GenerateRandomColorSequence();
+            UpdateControls(message);
         }
 
         private void ClearBoard(int numberOfGuesses)
@@ -513,6 +588,23 @@ namespace Mastermind
             peek2.Visibility = visibility;
             peek3.Visibility = visibility;
             peek4.Visibility = visibility;
+        }
+
+        private void SetCorrectAnswerOnHint()
+        {
+            correct1.Source = codedSequence[0];
+            correct2.Source = codedSequence[1];
+            correct3.Source = codedSequence[2];
+            correct4.Source = codedSequence[3];
+        }
+
+        private void ChangeHintVisibility(Visibility visibility)
+        {
+            lblCorrect.Visibility = visibility;
+            correct1.Visibility = visibility;
+            correct2.Visibility = visibility;
+            correct3.Visibility = visibility;
+            correct4.Visibility = visibility;
         }
     }
 }
